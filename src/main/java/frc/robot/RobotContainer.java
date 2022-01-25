@@ -8,6 +8,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.StrafeCommand;
+import frc.robot.commands.TurnCommand;
+import frc.robot.commands.TurnConcerningCommand;
+import frc.robot.commands.TurnRearCommand;
+import frc.robot.commands.DiagonalCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,7 +30,11 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final DriveCommand m_driveCommand = new DriveCommand(m_driveSubsystem);
-
+  private final TurnCommand m_turnCommand = new TurnCommand(m_driveSubsystem);
+  private final DiagonalCommand m_diagonalCommand = new DiagonalCommand(m_driveSubsystem);
+  private final StrafeCommand m_strafeCommand = new StrafeCommand(m_driveSubsystem);
+  private final TurnConcerningCommand m_turnConcerningCommand = new TurnConcerningCommand(m_driveSubsystem);
+  private final TurnRearCommand m_turnRearCommand = new TurnRearCommand(m_driveSubsystem);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -53,4 +62,25 @@ public class RobotContainer {
   public Command getDriveCommand() {
     return m_driveCommand;
   }
+
+  public Command getTurnCommand() {
+    return m_turnCommand;
+  }
+
+  public Command getDiagonalCommand() {
+    return m_diagonalCommand;
+  }
+
+  public Command getStrafeCommand() {
+    return m_strafeCommand;
+  }
+  
+  public Command getTurnConcerningCommand() {
+    return m_turnConcerningCommand;
+  }
+
+  public Command getTurnRearCommand() {
+    return m_turnRearCommand;
+  }
+
 }
