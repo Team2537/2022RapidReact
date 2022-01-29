@@ -26,14 +26,15 @@ import edu.wpi.first.wpilibj2.command.button.Button;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-
+  
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final XboxController m_driveController = new XboxController(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
-    m_driveSubsystem.setDefaultCommand(new DriveCartesianCommand(() -> m_driveController.getLeftX(), () -> m_driveController.getLeftY(), () -> m_driveController.getRightX(), m_driveSubsystem));
+    m_driveSubsystem.setDefaultCommand(new DriveCartesianCommand(() -> -m_driveController.getLeftX(), () -> m_driveController.getLeftY(), () -> m_driveController.getRightX(), m_driveSubsystem, 0.5));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -47,7 +48,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     Button stopDriveTrainButton = new Button(() -> m_driveController.getAButton());
 
-    stopDriveTrainButton.whenPressed(new ExampleCommand(null));
+    stopDriveTrainButton.whenPressed(new ExampleCommand(m_exampleSubsystem));
   }
 
   /**

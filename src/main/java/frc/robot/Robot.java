@@ -80,15 +80,13 @@ public class Robot extends TimedRobot {
     /*if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }*/
-    m_driveCommand = m_robotContainer.getDriveCommand();
-    m_driveCommand.schedule();
+    
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    m_strafeCommand = m_robotContainer.getStrafeCommand();
-    m_strafeCommand.schedule();
+    
   }
 
   @Override

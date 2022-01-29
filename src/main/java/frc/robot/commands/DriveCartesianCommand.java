@@ -10,12 +10,14 @@ public class DriveCartesianCommand extends CommandBase {
     private final DoubleSupplier m_x;
     private final DoubleSupplier m_y;
     private final DoubleSupplier m_rotate;
+    private final double m_speedScale;
     
-    public DriveCartesianCommand(DoubleSupplier x, DoubleSupplier y, DoubleSupplier rotate, DriveSubsystem subsystem) {
+    public DriveCartesianCommand(DoubleSupplier x, DoubleSupplier y, DoubleSupplier rotate, DriveSubsystem subsystem, double speedScale) {
       m_x = x;
       m_y = y;
       m_rotate = rotate;  
       m_subsystem = subsystem;
+      m_speedScale = speedScale;
 
         addRequirements(subsystem);
     }
@@ -27,7 +29,7 @@ public class DriveCartesianCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setDriveCartesian(m_y.getAsDouble(), m_x.getAsDouble(), m_rotate.getAsDouble());
+    m_subsystem.setDriveCartesian(m_y.getAsDouble() * m_speedScale, m_x.getAsDouble() * m_speedScale, m_rotate.getAsDouble() * m_speedScale);
   
   }
 
