@@ -12,4 +12,9 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+    public static final int LAUNCH_VELOCITY = 4000; // rpm
+    public static final double SHOOTER_POWER = 0.75; // percent output
+    public static final double INTAKE_POWER = 0.75; // percent output
+    public static final double END_OFFSET = 0.3; // seconds
+}
