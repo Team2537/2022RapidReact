@@ -12,17 +12,16 @@ public class RangefinderSubsystem extends SubsystemBase {
         m_rangefinder = new Ultrasonic(0, 1);
         m_rangefinder.setEnabled(true);
         Ultrasonic.setAutomaticMode(true);
-        Shuffleboard.getTab("SmartDashboard").addNumber("Rangefinder Distance (inches)", () -> getDistance());
+        Shuffleboard.getTab("SmartDashboard").addNumber("Rangefinder Distance (feet)", () -> getDistance());
     }
 
     public double getDistance() {
-        return m_rangefinder.getRangeInches();
+        return (m_rangefinder.getRangeInches() / 2);
     }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        System.out.println(getDistance());
     }
 
     @Override

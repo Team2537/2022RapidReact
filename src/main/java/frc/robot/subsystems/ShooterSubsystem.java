@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ports;
@@ -15,10 +14,10 @@ public class ShooterSubsystem extends SubsystemBase {
     private final CANSparkMax shooterLeft = new CANSparkMax(Ports.SHOOTER_LEFT, MotorType.kBrushless);
     private final TalonSRX intakeRight = new TalonSRX(Ports.INTAKE_RIGHT);
     private final TalonSRX intakeLeft = new TalonSRX(Ports.INTAKE_LEFT);
-    // CANSparkMax.getRelativeEncoder(int)
 
     public ShooterSubsystem() {
         shooterLeft.setInverted(true);
+
         Shuffleboard.getTab("SmartDashboard").addNumber("Shooter Motors RPM", () -> getShooterVelocity());
     }
 
@@ -46,14 +45,14 @@ public class ShooterSubsystem extends SubsystemBase {
         double error = targetSpeed - getShooterVelocity();
 
         double proportional = nominalPWM + (error * shooter_kP) / maxRPM; // divide error in rpm by max rpm of neo motor to get percentage
-        proportional = Math.min(Math.max(proportional, 0), 1);
 
         shooter_tI += (error * shooter_kI * cycleTime) / maxRPM; // cycle time of robot (0.02 seconds = 1 tick)
 
-        double derivative = shooter_kD * (error - prevError) / cycleTime;
+        double derivative = (shooter_kD * (error - prevError) / cycleTime) / maxRPM;
         prevError = error;
-
-        setShooterMotors(proportional + shooter_tI + derivative);
+        
+        double pid = Math.min(Math.max((proportional + shooter_tI - derivative), 0), 1);
+        setShooterMotors(pid);
     }
 
     public void resetShooterPID() {
@@ -71,7 +70,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
+    }
 
     @Override
     public void simulationPeriodic() {}
