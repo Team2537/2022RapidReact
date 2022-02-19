@@ -4,7 +4,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ports;
 
@@ -15,10 +18,15 @@ public class ShooterSubsystem extends SubsystemBase {
     private final TalonSRX intakeRight = new TalonSRX(Ports.INTAKE_RIGHT);
     private final TalonSRX intakeLeft = new TalonSRX(Ports.INTAKE_LEFT);
 
+    private final DutyCycleEncoder shooterAngleEncoder = new DutyCycleEncoder(1);
+
     public ShooterSubsystem() {
         shooterLeft.setInverted(true);
 
-        Shuffleboard.getTab("SmartDashboard").addNumber("Shooter Motors RPM", () -> getShooterVelocity());
+        ShuffleboardTab smartDashboard = Shuffleboard.getTab("SmartDashboard");
+        smartDashboard.addNumber("Shooter Motors RPM", () -> getShooterVelocity());
+        smartDashboard.addNumber("Encoder Value", () -> shooterAngleEncoder.get() * 360);
+
     }
 
     public void setShooterMotors(double speed) {
@@ -67,6 +75,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public double getShooterVelocity() {
         return (shooterRight.getEncoder().getVelocity() + shooterLeft.getEncoder().getVelocity()) / 2;
+    }
+
+    public double getShooterAngle() {
+        return shooterAngleEncoder.get() * 360; // Multiply by 360 to convert to degrees because encoder value is in revolution.
     }
 
     @Override

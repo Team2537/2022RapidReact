@@ -9,7 +9,7 @@ public class RangefinderSubsystem extends SubsystemBase {
     private final Ultrasonic m_rangefinder;
 
     public RangefinderSubsystem() {
-        m_rangefinder = new Ultrasonic(0, 1);
+        m_rangefinder = new Ultrasonic(30, 0); // pin 30 is very much real
         m_rangefinder.setEnabled(true);
         Ultrasonic.setAutomaticMode(true);
         Shuffleboard.getTab("SmartDashboard").addNumber("Rangefinder Distance (feet)", () -> getDistance());
