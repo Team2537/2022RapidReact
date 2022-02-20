@@ -34,7 +34,10 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
-    m_driveSubsystem.setDefaultCommand(new DriveCartesianCommand(() -> -m_driveController.getLeftX(), () -> m_driveController.getLeftY(), () -> m_driveController.getRightX(), m_driveSubsystem, 0.5));
+    m_driveSubsystem.setDefaultCommand(new DriveCartesianCommand(
+      () -> -m_driveController.getLeftX(), 
+      () -> m_driveController.getLeftY(), 
+      () -> m_driveController.getRightX(), m_driveSubsystem, 0.5));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -46,9 +49,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    Button stopDriveTrainButton = new Button(() -> m_driveController.getAButton());
+    Button stopDriveTrainButton = new Button(() -> m_driveController.getBackButton());
+    Button startDriveTrainButton = new Button(() -> m_driveController.getStartButton());
 
     stopDriveTrainButton.whenPressed(new ExampleCommand(m_exampleSubsystem));
+    startDriveTrainButton.whenPressed(new DriveCartesianCommand(
+      () -> -m_driveController.getLeftX(),
+      () -> m_driveController.getLeftY(),
+      () -> m_driveController.getRightX(), m_driveSubsystem, 0.5));
   }
 
   /**
