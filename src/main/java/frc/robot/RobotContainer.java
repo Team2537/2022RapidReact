@@ -8,11 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveCartesianCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.StrafeCommand;
-import frc.robot.commands.TurnCommand;
-import frc.robot.commands.TurnConcerningCommand;
-import frc.robot.commands.TurnRearCommand;
-import frc.robot.commands.DiagonalCommand;
+import frc.robot.commands.MotorTestCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,8 +31,8 @@ public class RobotContainer {
   public RobotContainer() {
     
     m_driveSubsystem.setDefaultCommand(new DriveCartesianCommand(
-      () -> -m_driveController.getLeftX(), 
-      () -> m_driveController.getLeftY(), 
+      () -> m_driveController.getLeftX(),
+      () -> -m_driveController.getLeftY(),
       () -> m_driveController.getRightX(), m_driveSubsystem, 0.5));
     // Configure the button bindings
     configureButtonBindings();
@@ -50,13 +46,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     Button stopDriveTrainButton = new Button(() -> m_driveController.getBackButton());
-    Button startDriveTrainButton = new Button(() -> m_driveController.getStartButton());
+    Button testMotorsButton = new Button(() -> m_driveController.getStartButton());
+    testMotorsButton.whenPressed(new MotorTestCommand(m_driveSubsystem));
 
     stopDriveTrainButton.whenPressed(new ExampleCommand(m_exampleSubsystem));
-    startDriveTrainButton.whenPressed(new DriveCartesianCommand(
-      () -> -m_driveController.getLeftX(),
-      () -> m_driveController.getLeftY(),
-      () -> m_driveController.getRightX(), m_driveSubsystem, 0.5));
   }
 
   /**

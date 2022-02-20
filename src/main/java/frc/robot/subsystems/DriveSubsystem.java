@@ -1,23 +1,28 @@
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Ports;
+import static frc.robot.Ports.*;
+import frc.robot.SparkMaxController;
 
 public class DriveSubsystem extends SubsystemBase {
     
-    private final CANSparkMax frontLeft = new CANSparkMax(Ports.FRONT_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final CANSparkMax frontRight = new CANSparkMax(Ports.FRONT_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final CANSparkMax backLeft = new CANSparkMax(Ports.BACK_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final CANSparkMax backRight = new CANSparkMax(Ports.BACK_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private MecanumDrive m_mecanum = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
+    private final SparkMaxController frontLeft, frontRight, backLeft, backRight;
+    private final AHRS navX = new AHRS();
+    private final MecanumDrive m_mecanum;
 
     public DriveSubsystem() {
-        frontLeft.setInverted(true);
-        backLeft.setInverted(true);
+        frontLeft = new SparkMaxController(FRONT_LEFT); 
+        frontRight = new SparkMaxController(FRONT_RIGHT);
+        backLeft = new SparkMaxController(BACK_LEFT);
+        backRight = new SparkMaxController(BACK_RIGHT);
+
+        m_mecanum = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
     }
 
     public void setDriveCartesian(double ySpeed, double xSpeed, double zRotation) {
