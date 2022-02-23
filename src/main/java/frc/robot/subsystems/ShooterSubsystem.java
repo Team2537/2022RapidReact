@@ -18,14 +18,11 @@ public class ShooterSubsystem extends SubsystemBase {
     private final TalonSRX intakeRight = new TalonSRX(Ports.INTAKE_RIGHT);
     private final TalonSRX intakeLeft = new TalonSRX(Ports.INTAKE_LEFT);
 
-    private final DutyCycleEncoder shooterAngleEncoder = new DutyCycleEncoder(1);
-
     public ShooterSubsystem() {
         shooterLeft.setInverted(true);
 
         ShuffleboardTab smartDashboard = Shuffleboard.getTab("SmartDashboard");
         smartDashboard.addNumber("Shooter Motors RPM", () -> getShooterVelocity());
-        smartDashboard.addNumber("Encoder Value", () -> shooterAngleEncoder.get() * 360);
 
     }
 
@@ -75,10 +72,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public double getShooterVelocity() {
         return (shooterRight.getEncoder().getVelocity() + shooterLeft.getEncoder().getVelocity()) / 2;
-    }
-
-    public double getShooterAngle() {
-        return shooterAngleEncoder.get() * 360; // Multiply by 360 to convert to degrees because encoder value is in revolution.
     }
 
     @Override

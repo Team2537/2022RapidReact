@@ -10,4 +10,5 @@ public class Ports {
     public static final int SHOOTER_RIGHT = 5;
     public static final int INTAKE_LEFT = 16;
     public static final int INTAKE_RIGHT = 15;
+    public static final int WINCH = 8;
 }
