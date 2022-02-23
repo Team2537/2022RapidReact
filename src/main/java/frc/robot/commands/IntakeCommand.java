@@ -33,7 +33,7 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void execute() {
     m_subsystem.setIntakeMotors(-INTAKE_POWER);
-    m_subsystem.setShooterMotors(-INTAKE_POWER * (2/3));
+    m_subsystem.setShooterMotors(-INTAKE_POWER / 3f);
   }
 
   // Called once the command ends or is interrupted.

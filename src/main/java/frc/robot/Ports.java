@@ -8,6 +8,6 @@ public class Ports {
 
     public static final int SHOOTER_LEFT = 4;
     public static final int SHOOTER_RIGHT = 5;
-    public static final int INTAKE_LEFT = 0;
-    public static final int INTAKE_RIGHT = 8;
+    public static final int INTAKE_LEFT = 16;
+    public static final int INTAKE_RIGHT = 15;
 }

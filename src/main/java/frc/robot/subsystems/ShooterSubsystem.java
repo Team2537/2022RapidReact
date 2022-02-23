@@ -37,13 +37,13 @@ public class ShooterSubsystem extends SubsystemBase {
     private final double maxRPM = 5676;
     private final double cycleTime = 0.02;
 
-    private final double shooter_kP = 0.07;
-    private final double nominalPWM = 0.7;
+    private final double shooter_kP = 0.045;
+    private final double nominalPWM = 0.75;
 
-    private final double shooter_kI = 0.07;
+    private final double shooter_kI = 0.06;
     private double shooter_tI = 0;
 
-    private final double shooter_kD = 0.07;
+    private final double shooter_kD = 0.058;
     private double prevError = 0;
     /**
      * Uses a PID loop to get both shooter motors to a specific, consistent RPM

@@ -32,7 +32,7 @@ public class ShootCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (m_subsystem.getShooterVelocity() > LAUNCH_VELOCITY) {
+        if (m_subsystem.getShooterVelocity() > TARGET_VELOCITY) {
             m_timer.start();
             m_subsystem.setIntakeMotors(INTAKE_POWER);
         }

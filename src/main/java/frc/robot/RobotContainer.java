@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.ShooterPIDCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.RangefinderSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -33,6 +34,7 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final IntakeCommand m_intakeCommand = new IntakeCommand(m_shooterSubsystem);
   private final ShootCommand m_shootCommand = new ShootCommand(m_shooterSubsystem);
+  private final ShooterPIDCommand m_shooterPID = new ShooterPIDCommand(m_shooterSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -51,7 +53,8 @@ public class RobotContainer {
     Button shootButton = new Button(() -> xboxController.getRightBumper());
 
     intakeButton.whileHeld(m_intakeCommand);
-    shootButton.whenPressed(m_shootCommand);
+    //shootButton.whenPressed(m_shootCommand);
+    shootButton.whenPressed(m_shooterPID);
   }
 
   /**
