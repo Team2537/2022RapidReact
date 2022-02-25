@@ -22,8 +22,9 @@ public class WinchSubsystem extends SubsystemBase {
 
     public void setWinchAngle(double targetAngle) {
         double error = targetAngle - getShooterAngle();
+        double speed = Math.abs(error) < 1 ? 0.25 : 1;
 
-        setWinch(error < 0 ? 1 : -1);
+        setWinch(error < 0 ? speed : -speed);
     }
 
     public double getShooterAngle() {

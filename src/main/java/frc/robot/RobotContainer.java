@@ -8,6 +8,7 @@ import java.util.Random;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.commands.AngleShooterCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
@@ -41,6 +42,9 @@ public class RobotContainer {
   private final ShootCommand m_shootCommand = new ShootCommand(m_shooterSubsystem);
   private final ShooterPIDCommand m_shooterPID = new ShooterPIDCommand(m_shooterSubsystem);
 
+  private final AngleShooterCommand twentyDegrees = new AngleShooterCommand(m_winchSubsystem, 20, xboxController);
+  private final AngleShooterCommand seventyDegrees = new AngleShooterCommand(m_winchSubsystem, 70, xboxController);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -57,6 +61,10 @@ public class RobotContainer {
     Button intakeButton = new Button(() -> xboxController.getLeftBumper());
     Button shootButton = new Button(() -> xboxController.getRightBumper());
     Button angleButton = new Button(() -> xboxController.getAButton());
+    Button angleButton2 = new Button(() -> xboxController.getBButton());
+
+    angleButton.whenPressed(twentyDegrees);
+    angleButton2.whenPressed(seventyDegrees);
 
     intakeButton.whileHeld(m_intakeCommand);
     //shootButton.whenPressed(m_shootCommand);
