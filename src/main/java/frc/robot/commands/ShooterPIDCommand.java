@@ -35,7 +35,7 @@ public class ShooterPIDCommand extends CommandBase {
       m_subsystem.setShooterPID(TARGET_VELOCITY);
 
       // Check shooter velocity within a small range to avoid missing shooting opportunity.
-      if (m_subsystem.getShooterVelocity() > 3990 && m_subsystem.getShooterVelocity() < 4010) {
+      if (m_subsystem.getShooterVelocity() > 4180 && m_subsystem.getShooterVelocity() < 4220) {
         if (stable) {
           m_timer.start();
           m_subsystem.setIntakeMotors(SHOOTER_POWER);

@@ -35,9 +35,9 @@ public class ShooterSubsystem extends SubsystemBase {
     private final double cycleTime = 0.02;
 
     private final double shooter_kP = 0.045;
-    private final double nominalPWM = 0.75;
+    private final double nominalPWM = 0.8;
 
-    private final double shooter_kI = 0.07;
+    private final double shooter_kI = 0.09;
     private double shooter_tI = 0;
 
     private final double shooter_kD = 0.058;
