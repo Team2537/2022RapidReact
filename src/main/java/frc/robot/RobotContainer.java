@@ -46,8 +46,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     Button stopDriveTrainButton = new Button(() -> m_driveController.getBackButton());
-    Button testMotorsButton = new Button(() -> m_driveController.getStartButton());
-    testMotorsButton.whenPressed(new MotorTestCommand(m_driveSubsystem));
+    //Button testMotorsButton = new Button(() -> m_driveController.getStartButton());
+    //testMotorsButton.whenPressed(new MotorTestCommand(m_driveSubsystem));
 
     stopDriveTrainButton.whenPressed(new ExampleCommand(m_exampleSubsystem));
   }
