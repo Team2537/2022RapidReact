@@ -2,25 +2,22 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
-
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Ports.*;
-import frc.robot.SparkMaxController;
 
 public class DriveSubsystem extends SubsystemBase {
     
-    private final SparkMaxController frontLeft, frontRight, backLeft, backRight;
+    private final CANSparkMax frontLeft, frontRight, backLeft, backRight;
     private final AHRS navX = new AHRS();
     private final MecanumDrive m_mecanum;
 
     public DriveSubsystem() {
-        frontLeft = new SparkMaxController(FRONT_LEFT); 
-        frontRight = new SparkMaxController(FRONT_RIGHT);
-        backLeft = new SparkMaxController(BACK_LEFT);
-        backRight = new SparkMaxController(BACK_RIGHT);
+        frontLeft = new CANSparkMax(FRONT_LEFT, MotorType.kBrushless); 
+        frontRight = new CANSparkMax(FRONT_RIGHT, MotorType.kBrushless);
+        backLeft = new CANSparkMax(BACK_LEFT, MotorType.kBrushless);
+        backRight = new CANSparkMax(BACK_RIGHT, MotorType.kBrushless);
 
         m_mecanum = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
     }
