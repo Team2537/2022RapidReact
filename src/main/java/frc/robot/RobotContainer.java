@@ -8,6 +8,10 @@ import java.util.Random;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.DriveCartesianCommand;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.MotorTestCommand;
+import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.commands.AngleShooterCommand;
 import frc.robot.commands.ExampleCommand;
@@ -36,17 +40,19 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final RangefinderSubsystem m_rangefinderSubsystem = new RangefinderSubsystem();
   private final WinchSubsystem m_winchSubsystem = new WinchSubsystem();
+  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final IntakeCommand m_intakeCommand = new IntakeCommand(m_shooterSubsystem);
   private final ShootCommand m_shootCommand = new ShootCommand(m_shooterSubsystem);
   private final ShooterPIDCommand m_shooterPID = new ShooterPIDCommand(m_shooterSubsystem);
 
-  private final AngleShooterCommand twentyDegrees = new AngleShooterCommand(m_winchSubsystem, 20, xboxController);
-  private final AngleShooterCommand seventyDegrees = new AngleShooterCommand(m_winchSubsystem, 70, xboxController);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    m_driveSubsystem.setDefaultCommand(new DriveCartesianCommand(
+      () -> m_driveController.getLeftX(),
+      () -> -m_driveController.getRightX(),
+      () -> m_driveController.getLeftY(), m_driveSubsystem, 0.5));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -58,16 +64,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    Button stopDriveTrainButton = new Button(() -> xboxController.getBackButton());
     Button intakeButton = new Button(() -> xboxController.getLeftBumper());
     Button shootButton = new Button(() -> xboxController.getRightBumper());
-    Button angleButton = new Button(() -> xboxController.getAButton());
-    Button angleButton2 = new Button(() -> xboxController.getBButton());
 
-    angleButton.whenPressed(twentyDegrees);
-    angleButton2.whenPressed(seventyDegrees);
-
+    stopDriveTrainButton.whenPressed(new ExampleCommand(m_exampleSubsystem));
     intakeButton.whileHeld(m_intakeCommand);
-    //shootButton.whenPressed(m_shootCommand);
     shootButton.whenPressed(m_shooterPID);
   }
 
@@ -78,6 +80,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return null;
   }
+
+  
+
 }
