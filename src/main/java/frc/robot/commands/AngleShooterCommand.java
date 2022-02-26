@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.RangefinderSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.WinchSubsystem;
 
 public class AngleShooterCommand extends CommandBase {
@@ -28,7 +30,17 @@ public class AngleShooterCommand extends CommandBase {
       // Use addRequirements() here to declare subsystem dependencies.
       addRequirements(subsystem);
     }
-  
+
+    public AngleShooterCommand(WinchSubsystem subsystem, RangefinderSubsystem rangefinder, ShooterSubsystem shooter, XboxController controller) {
+      m_subsystem = subsystem;
+      m_controller = controller;
+
+      m_angle = subsystem.getAngle(rangefinder.getDistance(), 10, shooter.getShooterVelocity());
+      direction = m_subsystem.getShooterAngle() < m_angle ? 1 : -1;
+
+      addRequirements(subsystem);
+    }
+
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {

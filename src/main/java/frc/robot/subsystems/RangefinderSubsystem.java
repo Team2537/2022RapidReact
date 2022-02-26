@@ -3,13 +3,14 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.Ports.*;
 
 public class RangefinderSubsystem extends SubsystemBase {
 
     private final Ultrasonic m_rangefinder;
 
     public RangefinderSubsystem() {
-        m_rangefinder = new Ultrasonic(30, 0); // pin 30 is very much real
+        m_rangefinder = new Ultrasonic(30, ULTRASONIC); // pin 30 is very much real
         m_rangefinder.setEnabled(true);
         Ultrasonic.setAutomaticMode(true);
         Shuffleboard.getTab("SmartDashboard").addNumber("Rangefinder Distance (feet)", () -> getDistance());

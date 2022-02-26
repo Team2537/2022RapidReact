@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.Constants.*;
 
 public class WinchSubsystem extends SubsystemBase {
     private final CANSparkMax m_winch = new CANSparkMax(8, MotorType.kBrushed);
@@ -22,13 +23,24 @@ public class WinchSubsystem extends SubsystemBase {
 
     public void setWinchAngle(double targetAngle) {
         double error = targetAngle - getShooterAngle();
-        double speed = Math.abs(error) < 1 ? 0.25 : 1;
+        double speed = Math.abs(error) < 2 ? 0.15 : 1;
 
         setWinch(error < 0 ? speed : -speed);
     }
 
     public double getShooterAngle() {
         return shooterAngleEncoder.get() * 360; // Multiply by 360 to convert revolutions to degrees.
+    }
+
+    public double getAngle(double distance, double height, double initVelocity){
+        double time, testHeight, angle;
+        for (int i=90000; i>=0; i--){
+             angle = i/1000;
+             time= distance/(initVelocity*Math.cos(Math.toRadians(angle)));
+             testHeight= initVelocity*time + 0.5*GRAVITY*Math.pow(time, 2);
+             if (Math.abs(height-testHeight)<=0.001) return 90-Math.toDegrees(angle);
+        } 
+        return -1;
     }
 
     @Override

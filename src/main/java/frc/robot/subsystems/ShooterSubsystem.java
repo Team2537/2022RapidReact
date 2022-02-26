@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.IRSensor;
 import frc.robot.Ports;
+import java.lang.Math;
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -17,6 +19,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final CANSparkMax shooterLeft = new CANSparkMax(Ports.SHOOTER_LEFT, MotorType.kBrushless);
     private final TalonSRX intakeRight = new TalonSRX(Ports.INTAKE_RIGHT);
     private final TalonSRX intakeLeft = new TalonSRX(Ports.INTAKE_LEFT);
+
+    private final IRSensor m_irSensor = new IRSensor(0);
 
     public ShooterSubsystem() {
         shooterLeft.setInverted(true);
@@ -66,12 +70,17 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setIntakeMotors(double speed) {
+        if (speed < 0 && m_irSensor.getActive()) return; // Stop motors from trying to intake when balls are already loaded.
         intakeRight.set(ControlMode.PercentOutput, speed);
         intakeLeft.set(ControlMode.PercentOutput, speed);
     }
 
     public double getShooterVelocity() {
         return (shooterRight.getEncoder().getVelocity() + shooterLeft.getEncoder().getVelocity()) / 2;
+    }
+
+    public boolean getIRSensorActive() {
+        return m_irSensor.getActive();
     }
 
     @Override

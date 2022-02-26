@@ -18,6 +18,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShooterPIDCommand;
+import frc.robot.commands.WinchTestCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.RangefinderSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -44,15 +45,20 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final IntakeCommand m_intakeCommand = new IntakeCommand(m_shooterSubsystem);
-  private final ShootCommand m_shootCommand = new ShootCommand(m_shooterSubsystem);
+  //private final ShootCommand m_shootCommand = new ShootCommand(m_shooterSubsystem);
   private final ShooterPIDCommand m_shooterPID = new ShooterPIDCommand(m_shooterSubsystem);
+  private final AngleShooterCommand m_intakePositionCommand = new AngleShooterCommand(m_winchSubsystem, 97, xboxController);
+  private final WinchTestCommand m_testCommand = new WinchTestCommand(m_winchSubsystem, 
+    () -> xboxController.getLeftTriggerAxis(), 
+    () -> xboxController.getRightTriggerAxis());
+  private final DriveCartesianCommand m_driveCommand = new DriveCartesianCommand(
+    () -> xboxController.getLeftX(),
+    () -> -xboxController.getRightX(),
+    () -> xboxController.getLeftY(), m_driveSubsystem, 0.5);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_driveSubsystem.setDefaultCommand(new DriveCartesianCommand(
-      () -> m_driveController.getLeftX(),
-      () -> -m_driveController.getRightX(),
-      () -> m_driveController.getLeftY(), m_driveSubsystem, 0.5));
+    m_driveSubsystem.setDefaultCommand(m_driveCommand);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -64,12 +70,17 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    Button stopDriveTrainButton = new Button(() -> xboxController.getBackButton());
+    Button driveTrainButton = new Button(() -> xboxController.getStartButton());
     Button intakeButton = new Button(() -> xboxController.getLeftBumper());
+    Button intakePositionButton = new Button(() -> xboxController.getBButton());
+    Button shooterPositionButton = new Button(() -> xboxController.getAButton());
     Button shootButton = new Button(() -> xboxController.getRightBumper());
 
-    stopDriveTrainButton.whenPressed(new ExampleCommand(m_exampleSubsystem));
+    driveTrainButton.toggleWhenPressed(m_driveCommand);
     intakeButton.whileHeld(m_intakeCommand);
+    intakePositionButton.whenPressed(m_intakePositionCommand);
+    shooterPositionButton.whenPressed(new AngleShooterCommand(
+      m_winchSubsystem, m_rangefinderSubsystem, m_shooterSubsystem, xboxController));
     shootButton.whenPressed(m_shooterPID);
   }
 
