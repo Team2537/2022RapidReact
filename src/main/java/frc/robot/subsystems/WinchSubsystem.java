@@ -38,7 +38,10 @@ public class WinchSubsystem extends SubsystemBase {
              angle = i/1000;
              time= distance/(initVelocity*Math.cos(Math.toRadians(angle)));
              testHeight= initVelocity*time + 0.5*GRAVITY*Math.pow(time, 2);
-             if (Math.abs(height-testHeight)<=0.001) return 90-Math.toDegrees(angle);
+             if (Math.abs(height-testHeight)<=0.001 && (90 - angle) > 10) {
+                 System.out.println(90 - angle);
+                 return 90 - angle;
+             }
         } 
         return -1;
     }
