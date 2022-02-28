@@ -13,7 +13,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final int TARGET_VELOCITY = 4200; // rpm
+    public static final int TARGET_VELOCITY = 4000; // rpm
     public static final double SHOOTER_POWER = 0.75; // percent output
     public static final double INTAKE_POWER = 0.75; // percent output
     public static final double END_OFFSET = 0.3; // seconds

@@ -48,8 +48,8 @@ public class AngleShooterCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-      m_controller.setRumble(RumbleType.kLeftRumble, 0.25);
-      m_controller.setRumble(RumbleType.kRightRumble, 0.25);
+      m_controller.setRumble(RumbleType.kLeftRumble, 0.1);
+      m_controller.setRumble(RumbleType.kRightRumble, 0.1);
       m_subsystem.setWinchAngle(m_angle);
     }
   
@@ -67,7 +67,7 @@ public class AngleShooterCommand extends CommandBase {
       if (direction == 1) {
         if (m_subsystem.getShooterAngle() < m_angle + 0.25 && m_subsystem.getShooterAngle() >= m_angle) return true;
       } else {
-        if (m_subsystem.getShooterAngle() > m_angle - 0.2 && m_subsystem.getShooterAngle() <= m_angle) return true;
+        if (m_subsystem.getShooterAngle() > m_angle - 0.25 && m_subsystem.getShooterAngle() <= m_angle) return true;
       }
 
       return false;

@@ -10,9 +10,8 @@ public class ShooterPIDCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final ShooterSubsystem m_subsystem;
     private Timer m_timer = new Timer();
-
     private boolean twoLoaded;
-    private boolean stable = false;
+
     private double fireRPM = 0;
   
     /**
@@ -33,27 +32,24 @@ public class ShooterPIDCommand extends CommandBase {
       twoLoaded = m_subsystem.getIRSensorActive();
     }
   
+    boolean shoot = false;
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
       m_subsystem.setShooterPID(TARGET_VELOCITY);
-
       // Check shooter velocity within a small range to avoid missing shooting opportunity.
       if (Math.abs(m_subsystem.getShooterVelocity() - TARGET_VELOCITY) <= 25) {
-        if (stable) {
-          m_timer.start();
-          m_subsystem.setIntakeMotors(SHOOTER_POWER);
-        }
-        stable = true;
+        m_subsystem.setIntakeMotors(SHOOTER_POWER);
+        m_timer.start();
       }
     }
   
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+      shoot = false;
       fireRPM = m_subsystem.getShooterVelocity();
 
-      stable = false;
       m_timer.stop();
       m_timer.reset();
 
