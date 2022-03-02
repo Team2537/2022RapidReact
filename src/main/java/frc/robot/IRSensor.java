@@ -20,6 +20,6 @@ public class IRSensor {
      * @return Whether or not there is an object within 7 cm of the sensor.
      */
     public boolean getActive() {
-        return m_sensor.getVoltage() >= 3;
+        return m_sensor.getVoltage() < 1;
     }
 }

@@ -5,7 +5,6 @@ import frc.robot.subsystems.DriveSubsystem;
 import java.util.function.DoubleSupplier;
 
 public class DriveCartesianCommand extends CommandBase {
-
     private final DriveSubsystem m_subsystem;
     private final DoubleSupplier m_x;
     private final DoubleSupplier m_y;

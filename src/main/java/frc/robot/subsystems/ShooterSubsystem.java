@@ -20,7 +20,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final TalonSRX intakeRight = new TalonSRX(Ports.INTAKE_RIGHT);
     private final TalonSRX intakeLeft = new TalonSRX(Ports.INTAKE_LEFT);
 
-    private final IRSensor m_irSensor = new IRSensor(0);
+    private final IRSensor m_backSensor = new IRSensor(1);
+    private final IRSensor m_frontSensor =  new IRSensor(0);
 
     public ShooterSubsystem() {
         shooterLeft.setInverted(true);
@@ -38,13 +39,13 @@ public class ShooterSubsystem extends SubsystemBase {
     private final double maxRPM = 5676;
     private final double cycleTime = 0.02;
 
-    private final double shooter_kP = 0.043;
+    private final double shooter_kP = 0.045;
     private final double nominalPWM = 0.8;
 
     private final double shooter_kI = 0.09;
     private double shooter_tI = 0;
 
-    private final double shooter_kD = 0.058;
+    private final double shooter_kD = 0.06;
     private double prevError = 0;
     /**
      * Uses a PID loop to get both shooter motors to a specific, consistent RPM
@@ -70,17 +71,22 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setIntakeMotors(double speed) {
-        if (speed < 0 && m_irSensor.getActive()) return; // Stop motors from trying to intake when balls are already loaded.
         intakeRight.set(ControlMode.PercentOutput, speed);
         intakeLeft.set(ControlMode.PercentOutput, speed);
     }
-
+    /**
+     * @return The angular velocity of the shooter motors in RPM.
+     */
     public double getShooterVelocity() {
         return (shooterRight.getEncoder().getVelocity() + shooterLeft.getEncoder().getVelocity()) / 2;
     }
 
-    public boolean getIRSensorActive() {
-        return m_irSensor.getActive();
+    public boolean getBackSensorActive() {
+        return m_backSensor.getActive();
+    }
+
+    public boolean getFrontSensorActive() {
+        return m_frontSensor.getActive();
     }
 
     @Override

@@ -16,6 +16,9 @@ public class RangefinderSubsystem extends SubsystemBase {
         Shuffleboard.getTab("SmartDashboard").addNumber("Rangefinder Distance (feet)", () -> getDistance());
     }
 
+    /**
+     * @return The rangefinder range in feet.
+     */
     public double getDistance() {
         return (m_rangefinder.getRangeInches() / 2);
     }

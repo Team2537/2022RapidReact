@@ -35,7 +35,7 @@ public class AngleShooterCommand extends CommandBase {
       m_subsystem = subsystem;
       m_controller = controller;
 
-      m_angle = subsystem.getAngle(rangefinder.getDistance(), 10, shooter.getShooterVelocity());
+      m_angle = subsystem.getAngle(rangefinder.getDistance(), 8, 30);
       direction = m_subsystem.getShooterAngle() < m_angle ? 1 : -1;
 
       addRequirements(subsystem);

@@ -29,7 +29,7 @@ public class ShooterPIDCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-      twoLoaded = m_subsystem.getIRSensorActive();
+      twoLoaded = m_subsystem.getBackSensorActive() && m_subsystem.getFrontSensorActive();
     }
   
     boolean shoot = false;
@@ -60,9 +60,7 @@ public class ShooterPIDCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-      if (twoLoaded) {
-        return !m_subsystem.getIRSensorActive();
-      }
-      return m_timer.hasElapsed(0.5);
+      if (twoLoaded) return !m_subsystem.getBackSensorActive();
+      else return m_timer.hasElapsed(0.5);
     }
 }
