@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
+import java.math.BigDecimal;
+
 public class WinchSubsystem extends SubsystemBase {
     private final CANSparkMax m_winch = new CANSparkMax(8, MotorType.kBrushed);
     private final DutyCycleEncoder shooterAngleEncoder = new DutyCycleEncoder(1);
@@ -34,12 +36,12 @@ public class WinchSubsystem extends SubsystemBase {
 
     public double getAngle(double distance, double height, double initVelocity){
         for (int i = 90000; i >= 0; i--) {
-            double y = 
+            double y =
                 Math.tan(Math.toRadians(i / 1000f)) * distance - 
                 (GRAVITY * distance * distance / (2f * initVelocity * initVelocity * 
                 Math.cos(Math.toRadians(i / 1000f)) * Math.cos(Math.toRadians(i / 1000f))));
-
-            if (Math.abs(height - y) < 0.001 && 90 - (i/1000f) > 15) return 90 - (i / 1000f);
+            long y1 = (long) y;
+            if (Math.abs(height - y1) < 0.001 && 90 - (i/1000f) > 15) return 90 - (i / 1000f);
         }
         return 15;
         /*

@@ -45,14 +45,15 @@ public class RobotContainer {
 
   private final AngleShooterCommand m_intakePositionCommand = new AngleShooterCommand(m_winchSubsystem, 97, xboxController);
   private final AngleShooterCommand m_defaultPositionCommand = new AngleShooterCommand(m_winchSubsystem, 15, xboxController);
+  private final AngleShooterCommand m_velocityTestCommand = new AngleShooterCommand(m_winchSubsystem, 45, xboxController);
 
   private final ClimbCommand m_climbCommand = new ClimbCommand(
     m_climbSubsystem, () -> xboxController.getLeftY(), () -> -xboxController.getRightY());
 
   private final DriveCartesianCommand m_driveCommand = new DriveCartesianCommand(
     () -> xboxController.getLeftX(),
-    () -> -xboxController.getRightX(),
-    () -> xboxController.getLeftY(), m_driveSubsystem, 0.5);
+    () -> -xboxController.getLeftY(),
+    () -> xboxController.getRightX(), m_driveSubsystem, 0.5);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -83,6 +84,9 @@ public class RobotContainer {
 
     Button defaultPositionButton = new Button(() -> xboxController.getYButton());
     defaultPositionButton.whenPressed(m_defaultPositionCommand);
+
+    Button testPositionButton = new Button(() -> xboxController.getXButton());
+    testPositionButton.whenPressed(m_velocityTestCommand);
 
     Button shootButton = new Button(() -> xboxController.getRightBumper());
     shootButton.whenPressed(m_shooterPID);

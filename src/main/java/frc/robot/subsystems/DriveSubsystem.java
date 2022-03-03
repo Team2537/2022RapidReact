@@ -19,6 +19,9 @@ public class DriveSubsystem extends SubsystemBase {
         backLeft = new CANSparkMax(BACK_LEFT, MotorType.kBrushless);
         backRight = new CANSparkMax(BACK_RIGHT, MotorType.kBrushless);
 
+        backLeft.setInverted(true);
+        frontLeft.setInverted(true);
+
         m_mecanum = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
     }
 
