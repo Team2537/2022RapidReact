@@ -32,16 +32,17 @@ public class IntakeCommand extends CommandBase {
   public void initialize() {
     m_timer.stop();
     m_timer.reset();
+
+    if (m_subsystem.getBackSensorActive()) m_subsystem.setIntakeMotors(0);
+    else m_subsystem.setIntakeMotors(-INTAKE_POWER);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if (m_subsystem.getBackSensorActive()) m_timer.start();
-    else initialize();
 
-    if (!m_timer.hasElapsed(0.1)) m_subsystem.setIntakeMotors(-INTAKE_POWER);
-    else m_subsystem.setIntakeMotors(0);
+    if(m_timer.hasElapsed(0.1)) m_subsystem.setIntakeMotors(0);
     m_subsystem.setShooterMotors(-INTAKE_POWER / 3f);
   }
 

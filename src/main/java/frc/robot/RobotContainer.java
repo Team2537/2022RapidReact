@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveCartesianCommand;
@@ -11,9 +12,11 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.AngleShooterCommand;
+import frc.robot.commands.CalibrateClimbCommand;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterPIDCommand;
+import frc.robot.commands.SwapCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.RangefinderSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -47,6 +50,7 @@ public class RobotContainer {
   private final AngleShooterCommand m_defaultPositionCommand = new AngleShooterCommand(m_winchSubsystem, 15, xboxController);
   private final AngleShooterCommand m_velocityTestCommand = new AngleShooterCommand(m_winchSubsystem, 45, xboxController);
 
+  private final CalibrateClimbCommand m_calibrateCommand = new CalibrateClimbCommand(m_climbSubsystem);
   private final ClimbCommand m_climbCommand = new ClimbCommand(
     m_climbSubsystem, () -> xboxController.getLeftY(), () -> -xboxController.getRightY());
 
@@ -55,10 +59,12 @@ public class RobotContainer {
     () -> -xboxController.getLeftY(),
     () -> xboxController.getRightX(), m_driveSubsystem, 0.5);
 
+  private final SwapCommand m_swapCommand = new SwapCommand(m_driveCommand, m_climbCommand);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    //m_driveSubsystem.setDefaultCommand(m_driveCommand);
-    // Configure the button bindings
+    CameraServer.startAutomaticCapture();
+
     configureButtonBindings();
   }
 
@@ -69,11 +75,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    Button driveTrainButton = new Button(() -> xboxController.getStartButton());
-    driveTrainButton.toggleWhenPressed(m_driveCommand);
+    Button swapButton = new Button(() -> xboxController.getStartButton());
+    swapButton.whenPressed(m_swapCommand);
 
-    Button climbButton = new Button(() -> xboxController.getBackButton());
-    climbButton.toggleWhenPressed(m_climbCommand);
+    /*Button the = new Button(() -> xboxController.getBackButton());
+    the.whenPressed(() -> System.out.println("George"));*/
 
     Button intakePositionButton = new Button(() -> xboxController.getBButton());
     intakePositionButton.whenPressed(m_intakePositionCommand);
@@ -105,6 +111,8 @@ public class RobotContainer {
     return null;
   }
 
-  
+  public Command getClimbCalibration() {
+    return m_calibrateCommand;
+  }
 
 }
