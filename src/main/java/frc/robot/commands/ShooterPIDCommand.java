@@ -32,14 +32,13 @@ public class ShooterPIDCommand extends CommandBase {
       twoLoaded = m_subsystem.getBackSensorActive() && m_subsystem.getFrontSensorActive();
     }
   
-    boolean shoot = false;
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
       m_subsystem.setShooterPID(TARGET_VELOCITY);
       // Check shooter velocity within a small range to avoid missing shooting opportunity.
       if (Math.abs(m_subsystem.getShooterVelocity() - TARGET_VELOCITY) <= 25) {
-        m_subsystem.setIntakeMotors(INTAKE_POWER);
+        //m_subsystem.setIntakeMotors(INTAKE_POWER);
         m_timer.start();
       }
     }
@@ -47,7 +46,6 @@ public class ShooterPIDCommand extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-      shoot = false;
       fireRPM = m_subsystem.getShooterVelocity();
 
       m_timer.stop();
@@ -60,7 +58,8 @@ public class ShooterPIDCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-      if (twoLoaded) return !m_subsystem.getBackSensorActive();
-      else return m_timer.hasElapsed(0.5);
+      //if (twoLoaded) return !m_subsystem.getBackSensorActive();
+      //else return m_timer.hasElapsed(0.5);
+      return false;
     }
 }

@@ -17,6 +17,7 @@ import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterPIDCommand;
 import frc.robot.commands.SwapCommand;
+import frc.robot.commands.WinchTestCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.RangefinderSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -49,8 +50,9 @@ public class RobotContainer {
   private final AngleShooterCommand m_intakePositionCommand = new AngleShooterCommand(m_winchSubsystem, 97, xboxController);
   private final AngleShooterCommand m_defaultPositionCommand = new AngleShooterCommand(m_winchSubsystem, 15, xboxController);
   private final AngleShooterCommand m_velocityTestCommand = new AngleShooterCommand(m_winchSubsystem, 45, xboxController);
+  private final WinchTestCommand m_winchTest = new WinchTestCommand(
+    m_winchSubsystem, () -> xboxController.getLeftTriggerAxis(), () -> xboxController.getRightTriggerAxis());
 
-  private final CalibrateClimbCommand m_calibrateCommand = new CalibrateClimbCommand(m_climbSubsystem);
   private final ClimbCommand m_climbCommand = new ClimbCommand(
     m_climbSubsystem, () -> xboxController.getLeftY(), () -> -xboxController.getRightY());
 
@@ -88,8 +90,8 @@ public class RobotContainer {
     shooterPositionButton.whenPressed(new AngleShooterCommand(
       m_winchSubsystem, m_rangefinderSubsystem, m_shooterSubsystem, xboxController));
 
-    Button defaultPositionButton = new Button(() -> xboxController.getYButton());
-    defaultPositionButton.whenPressed(m_defaultPositionCommand);
+    Button winchTestButton = new Button(() -> xboxController.getYButton());
+    winchTestButton.toggleWhenPressed(m_defaultPositionCommand);
 
     Button testPositionButton = new Button(() -> xboxController.getXButton());
     testPositionButton.whenPressed(m_velocityTestCommand);
@@ -110,9 +112,4 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return null;
   }
-
-  public Command getClimbCalibration() {
-    return m_calibrateCommand;
-  }
-
 }

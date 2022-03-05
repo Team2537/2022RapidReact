@@ -14,7 +14,7 @@ public class AngleShooterCommand extends CommandBase {
     private final XboxController m_controller;
 
     private final double m_angle;
-    private final int direction;
+    private int direction;
   
     /**
      * Creates a new AngleShooterCommand.
@@ -26,7 +26,6 @@ public class AngleShooterCommand extends CommandBase {
       m_angle = angle;
       m_controller = controller;
 
-      direction = m_subsystem.getShooterAngle() < m_angle ? 1 : -1;
       // Use addRequirements() here to declare subsystem dependencies.
       addRequirements(subsystem);
     }
@@ -35,15 +34,16 @@ public class AngleShooterCommand extends CommandBase {
       m_subsystem = subsystem;
       m_controller = controller;
 
-      m_angle = subsystem.getAngle(rangefinder.getDistance(), 8, 30);
-      direction = m_subsystem.getShooterAngle() < m_angle ? 1 : -1;
+      m_angle = subsystem.getAngle(rangefinder.getDistance() + (2 + 1f/6f), 8, 30);
 
       addRequirements(subsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+      direction = m_subsystem.getShooterAngle() < m_angle ? 1 : -1;
+    }
   
     // Called every time the scheduler runs while the command is scheduled.
     @Override
