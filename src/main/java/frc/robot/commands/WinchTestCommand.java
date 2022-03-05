@@ -31,8 +31,8 @@ public class WinchTestCommand extends CommandBase{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_subsystem.setWinch(m_up.getAsDouble());
-        m_subsystem.setWinch(-m_down.getAsDouble());
+        if (m_up.getAsDouble() != 0) m_subsystem.setWinch(m_up.getAsDouble());
+        else m_subsystem.setWinch(-m_down.getAsDouble());
     }
   
     // Called once the command ends or is interrupted.

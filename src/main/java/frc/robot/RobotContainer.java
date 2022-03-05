@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.DriveCartesianCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -44,12 +45,12 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final IntakeCommand m_intakeCommand = new IntakeCommand(m_shooterSubsystem);
+  private final IntakeCommand m_intakeCommand = new IntakeCommand(m_shooterSubsystem, m_winchSubsystem);
   private final ShooterPIDCommand m_shooterPID = new ShooterPIDCommand(m_shooterSubsystem);
 
-  private final AngleShooterCommand m_intakePositionCommand = new AngleShooterCommand(m_winchSubsystem, 97, xboxController);
-  private final AngleShooterCommand m_defaultPositionCommand = new AngleShooterCommand(m_winchSubsystem, 15, xboxController);
-  private final AngleShooterCommand m_velocityTestCommand = new AngleShooterCommand(m_winchSubsystem, 45, xboxController);
+  private final AngleShooterCommand m_intakePositionCommand = new AngleShooterCommand(m_winchSubsystem, 97);
+  private final AngleShooterCommand m_defaultPositionCommand = new AngleShooterCommand(m_winchSubsystem, 15);
+  private final AngleShooterCommand m_velocityTestCommand = new AngleShooterCommand(m_winchSubsystem, 45);
   private final WinchTestCommand m_winchTest = new WinchTestCommand(
     m_winchSubsystem, () -> xboxController.getLeftTriggerAxis(), () -> xboxController.getRightTriggerAxis());
 
@@ -63,10 +64,16 @@ public class RobotContainer {
 
   private final SwapCommand m_swapCommand = new SwapCommand(m_driveCommand, m_climbCommand);
 
+  double optimalAngle = 15;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     CameraServer.startAutomaticCapture();
+    CameraServer.startAutomaticCapture();
 
+    Shuffleboard.getTab("SmartDashboard").addNumber("Optimal Angle", () -> optimalAngle);
+
+    AngleShooterCommand.setController(xboxController);
     configureButtonBindings();
   }
 
@@ -87,14 +94,16 @@ public class RobotContainer {
     intakePositionButton.whenPressed(m_intakePositionCommand);
 
     Button shooterPositionButton = new Button(() -> xboxController.getAButton());
-    shooterPositionButton.whenPressed(new AngleShooterCommand(
-      m_winchSubsystem, m_rangefinderSubsystem, m_shooterSubsystem, xboxController));
+    shooterPositionButton.whenPressed(() -> {
+      optimalAngle = m_winchSubsystem.getAngle(m_rangefinderSubsystem.getDistance() + 2.5f + 1f/6f, 8, 28);
+      new AngleShooterCommand(m_winchSubsystem, optimalAngle).schedule();
+    });
 
-    Button winchTestButton = new Button(() -> xboxController.getYButton());
-    winchTestButton.toggleWhenPressed(m_defaultPositionCommand);
+    Button defaultPositionButton = new Button(() -> xboxController.getYButton());
+    defaultPositionButton.toggleWhenPressed(m_defaultPositionCommand);
 
     Button testPositionButton = new Button(() -> xboxController.getXButton());
-    testPositionButton.whenPressed(m_velocityTestCommand);
+    testPositionButton.whenPressed(m_winchTest);
 
     Button shootButton = new Button(() -> xboxController.getRightBumper());
     shootButton.whenPressed(m_shooterPID);

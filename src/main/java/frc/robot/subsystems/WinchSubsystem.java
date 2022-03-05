@@ -40,7 +40,7 @@ public class WinchSubsystem extends SubsystemBase {
                 Math.tan(Math.toRadians(i / 1000f)) * distance - 
                 (GRAVITY * distance * distance / (2f * initVelocity * initVelocity * 
                 Math.cos(Math.toRadians(i / 1000f)) * Math.cos(Math.toRadians(i / 1000f))));
-            if (Math.abs(height - y) < 0.001 && 90 - (i/1000f) > 15) return 90 - (i / 1000f);
+            if (Math.abs(height - y) < 0.001 && 90 - (i/1000f) >= 13) return 90 - (i / 1000f);
         }
         return 15;
         /*

@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.ShooterSubsystem;
 import static frc.robot.Constants.*;
 
@@ -38,7 +39,7 @@ public class ShooterPIDCommand extends CommandBase {
       m_subsystem.setShooterPID(TARGET_VELOCITY);
       // Check shooter velocity within a small range to avoid missing shooting opportunity.
       if (Math.abs(m_subsystem.getShooterVelocity() - TARGET_VELOCITY) <= 25) {
-        //m_subsystem.setIntakeMotors(INTAKE_POWER);
+        m_subsystem.setIntakeMotors(INTAKE_POWER);
         m_timer.start();
       }
     }
@@ -58,8 +59,7 @@ public class ShooterPIDCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-      //if (twoLoaded) return !m_subsystem.getBackSensorActive();
-      //else return m_timer.hasElapsed(0.5);
-      return false;
+      if (twoLoaded) return !m_subsystem.getBackSensorActive();
+      else return m_timer.hasElapsed(1.5);
     }
 }
