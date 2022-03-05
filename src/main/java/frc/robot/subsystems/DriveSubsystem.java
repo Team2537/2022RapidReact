@@ -57,20 +57,25 @@ public class DriveSubsystem extends SubsystemBase {
         setBackRight(speed);
     }
 
-    public RelativeEncoder getBackLeftEncoder() {
+    public RelativeEncoder getBLEncoder() { //BL = backLeft
         return backLeft.getEncoder();
     }
 
-    public RelativeEncoder getBackRightEncoder() {
+    public RelativeEncoder getBREncoder() { //BR = backRight
         return backRight.getEncoder();
     }
 
-    public RelativeEncoder getFrontLeftEncoder() {
+    public RelativeEncoder getFLEncoder() { //FL = frontLeft
         return frontLeft.getEncoder();
     }
 
-    public RelativeEncoder getFrontRightEncoder() {
+    public RelativeEncoder getFREncoder() { // FR = frontRight
         return frontRight.getEncoder();
+    }
+
+
+    public double encoderToInches(double encoderPosition) {
+        return encoderPosition*Math.PI;
     }
 
 
