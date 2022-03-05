@@ -21,9 +21,8 @@ import frc.robot.subsystems.DriveSubsystem;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-
   private RobotContainer m_robotContainer;
+  private DriveSubsystem m_driveSubsystem;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -34,6 +33,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    m_driveSubsystem = m_robotContainer.getDriveSubsystem();
   }
 
   /**
@@ -96,7 +96,6 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-
     Shuffleboard.getTab("SmartDashboard").addNumber("backLeftEncoder", () -> m_driveSubsystem.getBackLeftEncoder().getPosition());
     Shuffleboard.getTab("SmartDashboard").addNumber("backRightEncoder", () -> m_driveSubsystem.getBackRightEncoder().getPosition());
     Shuffleboard.getTab("SmartDashboard").addNumber("frontLeftEncoder", () -> m_driveSubsystem.getFrontLeftEncoder().getPosition());
@@ -106,6 +105,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    //SmartDashboard.putNumber("backLeftEncoder", m_driveSubsystem.getBackLeftEncoder().getPosition());
+    //
   }
 }

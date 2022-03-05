@@ -105,6 +105,8 @@ public class RobotContainer {
     return null;
   }
 
-  
+  public DriveSubsystem getDriveSubsystem() {
+    return m_driveSubsystem;
+  }
 
 }
