@@ -7,6 +7,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.DriveSubsystem;
 
 
 /**
@@ -17,8 +21,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private Command m_driveCommand;
-  private Command m_strafeCommand;
+  private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
   private RobotContainer m_robotContainer;
 
@@ -93,11 +96,16 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+
+    Shuffleboard.getTab("SmartDashboard").addNumber("backLeftEncoder", () -> m_driveSubsystem.getBackLeftEncoder().getPosition());
+    Shuffleboard.getTab("SmartDashboard").addNumber("backRightEncoder", () -> m_driveSubsystem.getBackRightEncoder().getPosition());
+    Shuffleboard.getTab("SmartDashboard").addNumber("frontLeftEncoder", () -> m_driveSubsystem.getFrontLeftEncoder().getPosition());
+    Shuffleboard.getTab("SmartDashboard").addNumber("frontRightEncder", () -> m_driveSubsystem.getFrontRightEncoder().getPosition());
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-   
+    //SmartDashboard.putNumber("backLeftEncoder", m_driveSubsystem.getBackLeftEncoder().getPosition());
   }
 }

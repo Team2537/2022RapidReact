@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -55,6 +56,24 @@ public class DriveSubsystem extends SubsystemBase {
         setBackLeft(speed);
         setBackRight(speed);
     }
+
+    public RelativeEncoder getBackLeftEncoder() {
+        return backLeft.getEncoder();
+    }
+
+    public RelativeEncoder getBackRightEncoder() {
+        return backRight.getEncoder();
+    }
+
+    public RelativeEncoder getFrontLeftEncoder() {
+        return frontLeft.getEncoder();
+    }
+
+    public RelativeEncoder getFrontRightEncoder() {
+        return frontRight.getEncoder();
+    }
+
+
 
     @Override
     public void periodic() {}
