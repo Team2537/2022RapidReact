@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Ports.*;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class ClimbSubsystem extends SubsystemBase {
@@ -19,6 +20,14 @@ public class ClimbSubsystem extends SubsystemBase {
     public void setMotors(double left, double right) {
         m_left.set(left);
         m_right.set(right);
+    }
+
+    public RelativeEncoder getLeftEncoder() {
+      return m_left.getEncoder();
+    }
+
+    public RelativeEncoder getRightEncoder() {
+      return m_right.getEncoder();
     }
   
     @Override

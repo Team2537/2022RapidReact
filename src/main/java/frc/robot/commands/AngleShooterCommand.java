@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -11,39 +13,29 @@ import frc.robot.subsystems.WinchSubsystem;
 public class AngleShooterCommand extends CommandBase {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final WinchSubsystem m_subsystem;
-    private final XboxController m_controller;
+    private static XboxController m_controller;
 
     private final double m_angle;
-    private final int direction;
+    private int direction;
   
     /**
      * Creates a new AngleShooterCommand.
      *
      * @param subsystem The subsystem used by this command.
      */
-    public AngleShooterCommand(WinchSubsystem subsystem, double angle, XboxController controller) {
+    public AngleShooterCommand(WinchSubsystem subsystem, double angle) {
       m_subsystem = subsystem;
       m_angle = angle;
-      m_controller = controller;
 
-      direction = m_subsystem.getShooterAngle() < m_angle ? 1 : -1;
       // Use addRequirements() here to declare subsystem dependencies.
-      addRequirements(subsystem);
-    }
-
-    public AngleShooterCommand(WinchSubsystem subsystem, RangefinderSubsystem rangefinder, ShooterSubsystem shooter, XboxController controller) {
-      m_subsystem = subsystem;
-      m_controller = controller;
-
-      m_angle = subsystem.getAngle(rangefinder.getDistance(), 8, 30);
-      direction = m_subsystem.getShooterAngle() < m_angle ? 1 : -1;
-
       addRequirements(subsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+      direction = m_subsystem.getShooterAngle() < m_angle ? 1 : -1;
+    }
   
     // Called every time the scheduler runs while the command is scheduled.
     @Override
@@ -71,5 +63,9 @@ public class AngleShooterCommand extends CommandBase {
       }
 
       return false;
+    }
+
+    public static void setController(XboxController controller) {
+      m_controller = controller;
     }
 }

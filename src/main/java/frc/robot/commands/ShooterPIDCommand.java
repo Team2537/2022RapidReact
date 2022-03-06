@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.ShooterSubsystem;
 import static frc.robot.Constants.*;
 
@@ -32,7 +33,6 @@ public class ShooterPIDCommand extends CommandBase {
       twoLoaded = m_subsystem.getBackSensorActive() && m_subsystem.getFrontSensorActive();
     }
   
-    boolean shoot = false;
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
@@ -47,7 +47,6 @@ public class ShooterPIDCommand extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-      shoot = false;
       fireRPM = m_subsystem.getShooterVelocity();
 
       m_timer.stop();
@@ -61,6 +60,6 @@ public class ShooterPIDCommand extends CommandBase {
     @Override
     public boolean isFinished() {
       if (twoLoaded) return !m_subsystem.getBackSensorActive();
-      else return m_timer.hasElapsed(0.5);
+      else return m_timer.hasElapsed(1.5);
     }
 }
