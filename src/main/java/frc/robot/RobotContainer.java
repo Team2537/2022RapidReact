@@ -48,7 +48,7 @@ public class RobotContainer {
   private final AngleShooterCommand m_defaultPositionCommand = new AngleShooterCommand(m_winchSubsystem, 15, xboxController);
   private final AngleShooterCommand m_velocityTestCommand = new AngleShooterCommand(m_winchSubsystem, 45, xboxController);
 
-  private final DriveSetDistanceCommand m_driveSetDistance  = new DriveSetDistanceCommand(m_driveSubsystem, -48);;
+  private final DriveSetDistanceCommand m_driveSetDistance  = new DriveSetDistanceCommand(m_driveSubsystem, 60);;
 
   private final ClimbCommand m_climbCommand = new ClimbCommand(
     m_climbSubsystem, () -> xboxController.getLeftY(), () -> -xboxController.getRightY());

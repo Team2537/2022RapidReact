@@ -13,6 +13,7 @@ public class DriveSetDistanceCommand extends CommandBase {
   private final double ki = 0;
   private final double kd = 0;
   private PIDController m_controller = new PIDController(kp, ki, kd);
+  private double m_distance;
   private double initBL; //initial backLeft encoder position
   private double initBR; 
   private double initFL;
@@ -30,9 +31,15 @@ public class DriveSetDistanceCommand extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
   public DriveSetDistanceCommand(DriveSubsystem subsystem, double distance) {
-    
+    if(distance > 0) {
+      m_distance = distance + 4;
+    }
+    else {
+      m_distance = distance - 4;
+    }
     m_subsystem = subsystem;
-    m_controller.setSetpoint(distance);
+    m_controller.setSetpoint(m_distance);
+    
     
     
     // Use addRequirements() here to declare subsystem dependencies.
