@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.DriveCartesianCommand;
+import frc.robot.commands.DriveSetDistanceCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -53,6 +54,8 @@ public class RobotContainer {
   private final AngleShooterCommand m_velocityTestCommand = new AngleShooterCommand(m_winchSubsystem, 45);
   private final WinchTestCommand m_winchTest = new WinchTestCommand(
     m_winchSubsystem, () -> xboxController.getLeftTriggerAxis(), () -> xboxController.getRightTriggerAxis());
+
+  private final DriveSetDistanceCommand m_driveSetDistance  = new DriveSetDistanceCommand(m_driveSubsystem, 60);;
 
   private final ClimbCommand m_climbCommand = new ClimbCommand(
     m_climbSubsystem, () -> xboxController.getLeftY(), () -> -xboxController.getRightY());
@@ -119,6 +122,12 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return m_driveSetDistance;
   }
+
+
+  public DriveSubsystem getDriveSubsystem() {
+    return m_driveSubsystem;
+  }
+
 }

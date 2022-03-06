@@ -8,6 +8,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.CalibrateClimbCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.DriveSubsystem;
 
 
 /**
@@ -18,8 +22,8 @@ import frc.robot.commands.CalibrateClimbCommand;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
   private RobotContainer m_robotContainer;
+  private DriveSubsystem m_driveSubsystem;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -30,6 +34,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    m_driveSubsystem = m_robotContainer.getDriveSubsystem();
   }
 
   /**
@@ -59,6 +64,10 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    Shuffleboard.getTab("SmartDashboard").addNumber("backLeftEncoder", () -> m_driveSubsystem.getBLEncoder().getPosition());
+    Shuffleboard.getTab("SmartDashboard").addNumber("backRightEncoder", () -> m_driveSubsystem.getBREncoder().getPosition());
+    Shuffleboard.getTab("SmartDashboard").addNumber("frontLeftEncoder", () -> m_driveSubsystem.getFLEncoder().getPosition());
+    Shuffleboard.getTab("SmartDashboard").addNumber("frontRightEncder", () -> m_driveSubsystem.getFREncoder().getPosition());
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -68,7 +77,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+   
+  }
 
   @Override
   public void teleopInit() {
@@ -92,11 +103,13 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    /*
+  */
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-   
+    //
   }
 }
