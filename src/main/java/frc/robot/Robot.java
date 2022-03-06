@@ -63,6 +63,10 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    Shuffleboard.getTab("SmartDashboard").addNumber("backLeftEncoder", () -> m_driveSubsystem.getBLEncoder().getPosition());
+    Shuffleboard.getTab("SmartDashboard").addNumber("backRightEncoder", () -> m_driveSubsystem.getBREncoder().getPosition());
+    Shuffleboard.getTab("SmartDashboard").addNumber("frontLeftEncoder", () -> m_driveSubsystem.getFLEncoder().getPosition());
+    Shuffleboard.getTab("SmartDashboard").addNumber("frontRightEncder", () -> m_driveSubsystem.getFREncoder().getPosition());
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -72,7 +76,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+   
+  }
 
   @Override
   public void teleopInit() {
@@ -96,10 +102,8 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-    Shuffleboard.getTab("SmartDashboard").addNumber("backLeftEncoder", () -> m_driveSubsystem.getBackLeftEncoder().getPosition());
-    Shuffleboard.getTab("SmartDashboard").addNumber("backRightEncoder", () -> m_driveSubsystem.getBackRightEncoder().getPosition());
-    Shuffleboard.getTab("SmartDashboard").addNumber("frontLeftEncoder", () -> m_driveSubsystem.getFrontLeftEncoder().getPosition());
-    Shuffleboard.getTab("SmartDashboard").addNumber("frontRightEncder", () -> m_driveSubsystem.getFrontRightEncoder().getPosition());
+    /*
+  */
   }
 
   /** This function is called periodically during test mode. */

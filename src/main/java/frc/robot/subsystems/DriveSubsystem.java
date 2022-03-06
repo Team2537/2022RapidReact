@@ -75,7 +75,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 
     public double encoderToInches(double encoderPosition) {
-        return encoderPosition*Math.PI;
+        return encoderPosition*(24/23)*Math.PI;
     }
 
 
