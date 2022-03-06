@@ -70,9 +70,7 @@ public class Robot extends TimedRobot {
     Shuffleboard.getTab("SmartDashboard").addNumber("frontRightEncder", () -> m_driveSubsystem.getFREncoder().getPosition());
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+    if (m_autonomousCommand != null) m_autonomousCommand.schedule();
   }
 
   /** This function is called periodically during autonomous. */
