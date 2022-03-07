@@ -3,7 +3,6 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 /** An example command that uses an example subsystem. */
 public class DriveSetDistanceCommand extends CommandBase {
@@ -65,9 +64,7 @@ public class DriveSetDistanceCommand extends CommandBase {
 
       double avgDeltaEncoderPosition = (deltaBL + deltaBR + deltaFL + deltaFR)/4;
       PID = m_controller.calculate(m_subsystem.encoderToInches(avgDeltaEncoderPosition));
-      System.out.println("PID Value: " + PID);
       PID = Math.max(Math.min(0.1,PID),-0.1); //Scales PID btwn -1 to 1 if not already
-      System.out.println("PID Value after scaling: " + PID);
       //Shuffleboard.getTab("SmartDashboard").addNumber("PID Value:", PID);
     m_subsystem.setAll(PID);
   }
@@ -81,9 +78,6 @@ public class DriveSetDistanceCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_controller.atSetpoint()) {
-       // return true;
-    }
-    return false;
-    }
+    return m_controller.atSetpoint();
+  }
 }

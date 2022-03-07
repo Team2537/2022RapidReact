@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.ShooterSubsystem;
 import static frc.robot.Constants.*;
 
@@ -13,7 +12,11 @@ public class ShooterPIDCommand extends CommandBase {
     private Timer m_timer = new Timer();
     private boolean twoLoaded;
 
-    private double fireRPM = 0;
+    private static double fireRPM = 0;
+
+    static {
+      Shuffleboard.getTab("SmartDashboard").addNumber("Firing RPM", () -> fireRPM);
+    }
   
     /**
      * Creates a new ShooterPIDCommand.
@@ -21,7 +24,6 @@ public class ShooterPIDCommand extends CommandBase {
      * @param subsystem The subsystem used by this command.
      */
     public ShooterPIDCommand(ShooterSubsystem subsystem) {
-      Shuffleboard.getTab("SmartDashboard").addNumber("Firing RPM", () -> fireRPM);
       m_subsystem = subsystem;
       // Use addRequirements() here to declare subsystem dependencies.
       addRequirements(subsystem);

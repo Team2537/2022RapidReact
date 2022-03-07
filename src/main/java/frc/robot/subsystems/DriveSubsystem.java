@@ -11,7 +11,6 @@ import static frc.robot.Ports.*;
 public class DriveSubsystem extends SubsystemBase {
     
     private final CANSparkMax frontLeft, frontRight, backLeft, backRight;
-    private final AHRS navX = new AHRS();
     private final MecanumDrive m_mecanum;
 
     public DriveSubsystem() {
