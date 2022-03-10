@@ -10,22 +10,17 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.DriveCartesianCommand;
 import frc.robot.commands.DriveSetDistanceCommand;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.AngleShooterCommand;
-import frc.robot.commands.CalibrateClimbCommand;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterPIDCommand;
 import frc.robot.commands.SwapCommand;
 import frc.robot.commands.WinchTestCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.RangefinderSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.WinchSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
@@ -41,7 +36,7 @@ public class RobotContainer {
   private final XboxController xboxController = new XboxController(0);
   
   //Subsystems
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final RangefinderSubsystem m_rangefinderSubsystem = new RangefinderSubsystem();
@@ -49,12 +44,13 @@ public class RobotContainer {
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
 
   //Commands
-  private final IntakeCommand m_intakeCommand = new IntakeCommand(m_shooterSubsystem, m_winchSubsystem);
-  private final ShooterPIDCommand m_shooterPID = new ShooterPIDCommand(m_shooterSubsystem);
-
   private final AngleShooterCommand m_intakePositionCommand = new AngleShooterCommand(m_winchSubsystem, 97);
   private final AngleShooterCommand m_defaultPositionCommand = new AngleShooterCommand(m_winchSubsystem, 15);
-  private final AngleShooterCommand m_velocityTestCommand = new AngleShooterCommand(m_winchSubsystem, 45);
+  //private final AngleShooterCommand m_velocityTestCommand = new AngleShooterCommand(m_winchSubsystem, 45);
+
+  private final IntakeCommand m_intakeCommand = new IntakeCommand(m_shooterSubsystem);
+  //private final IntakeToggleCommand m_intakeToggle = new IntakeToggleCommand(m_intakeCommand, m_defaultPositionCommand);
+  private final ShooterPIDCommand m_shooterPID = new ShooterPIDCommand(m_shooterSubsystem);
 
   private final WinchTestCommand m_winchTest = new WinchTestCommand(
     m_winchSubsystem, () -> xboxController.getLeftTriggerAxis(), () -> xboxController.getRightTriggerAxis());
@@ -100,7 +96,7 @@ public class RobotContainer {
 
     Button shooterPositionButton = new Button(() -> xboxController.getAButton());
     shooterPositionButton.whenPressed(() -> {
-      optimalAngle = m_winchSubsystem.getAngle(m_rangefinderSubsystem.getDistance() + 2.5f + 1f/6f, 8, 28);
+      optimalAngle = m_winchSubsystem.getAngle(m_rangefinderSubsystem.getDistance() + 2.35, 8, 28);
       new AngleShooterCommand(m_winchSubsystem, optimalAngle).schedule();
     });
 

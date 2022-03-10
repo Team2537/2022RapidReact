@@ -17,5 +17,5 @@ public class Ports {
 
     // Climb
     public static final int CLIMB_RIGHT = 9;
-    public static final int CLIMB_LEFT = 10;
+    public static final int CLIMB_LEFT = 13;
 }

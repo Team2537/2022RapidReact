@@ -40,7 +40,7 @@ public class ShooterPIDCommand extends CommandBase {
     public void execute() {
       m_subsystem.setShooterPID(TARGET_VELOCITY);
       // Check shooter velocity within a small range to avoid missing shooting opportunity.
-      if (Math.abs(m_subsystem.getShooterVelocity() - TARGET_VELOCITY) <= 25) {
+      if (Math.abs(m_subsystem.getShooterVelocity() - TARGET_VELOCITY) <= 35) {
         m_subsystem.setIntakeMotors(INTAKE_POWER);
         m_timer.start();
       }
@@ -61,7 +61,6 @@ public class ShooterPIDCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-      if (twoLoaded) return !m_subsystem.getBackSensorActive();
-      else return m_timer.hasElapsed(1.5);
+      return twoLoaded ? !m_subsystem.getBackSensorActive() : m_timer.hasElapsed(1.5);
     }
 }
