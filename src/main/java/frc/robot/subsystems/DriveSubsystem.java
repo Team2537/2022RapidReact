@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Ports.*;
 
@@ -17,6 +18,11 @@ public class DriveSubsystem extends SubsystemBase {
         frontRight = new CANSparkMax(FRONT_RIGHT, MotorType.kBrushless);
         backLeft = new CANSparkMax(BACK_LEFT, MotorType.kBrushless);
         backRight = new CANSparkMax(BACK_RIGHT, MotorType.kBrushless);
+
+        Shuffleboard.getTab("SmartDashboard").addNumber("Front Left", () -> getFLEncoder().getPosition());
+        Shuffleboard.getTab("SmartDashboard").addNumber("Front Right", () -> getFREncoder().getPosition());
+        Shuffleboard.getTab("SmartDashboard").addNumber("Back Right", () -> getBREncoder().getPosition());
+        Shuffleboard.getTab("SmartDashboard").addNumber("Back Left", () -> getBLEncoder().getPosition());
 
         backLeft.setInverted(true);
         frontLeft.setInverted(true);

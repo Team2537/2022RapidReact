@@ -29,7 +29,12 @@ public class DriveCartesianCommand extends CommandBase {
   @Override
   public void execute() {
     m_subsystem.setDriveCartesian(m_y.getAsDouble() * m_speedScale, m_x.getAsDouble() * m_speedScale, m_rotate.getAsDouble() * m_speedScale);
-  
+    if (m_x.getAsDouble() == 0 && m_y.getAsDouble() == 0 && m_rotate.getAsDouble() == 0) {
+      m_subsystem.getFREncoder().setPosition(0);
+      m_subsystem.getFLEncoder().setPosition(0);
+      m_subsystem.getBREncoder().setPosition(0);
+      m_subsystem.getBLEncoder().setPosition(0);
+    } 
   }
 
   // Called once the command ends or is interrupted.

@@ -45,7 +45,7 @@ public class RobotContainer {
 
   //Commands
   private final AngleShooterCommand m_intakePositionCommand = new AngleShooterCommand(m_winchSubsystem, 97);
-  private final AngleShooterCommand m_defaultPositionCommand = new AngleShooterCommand(m_winchSubsystem, 15);
+  private final AngleShooterCommand m_defaultPositionCommand = new AngleShooterCommand(m_winchSubsystem, 9);
   //private final AngleShooterCommand m_velocityTestCommand = new AngleShooterCommand(m_winchSubsystem, 45);
 
   private final IntakeCommand m_intakeCommand = new IntakeCommand(m_shooterSubsystem);
@@ -69,7 +69,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    CameraServer.startAutomaticCapture();
     CameraServer.startAutomaticCapture();
 
     Shuffleboard.getTab("SmartDashboard").addNumber("Optimal Angle", () -> optimalAngle);
@@ -96,7 +95,7 @@ public class RobotContainer {
 
     Button shooterPositionButton = new Button(() -> xboxController.getAButton());
     shooterPositionButton.whenPressed(() -> {
-      optimalAngle = m_winchSubsystem.getAngle(m_rangefinderSubsystem.getDistance() + 2.35, 8, 28);
+      optimalAngle = m_winchSubsystem.getAngle(m_rangefinderSubsystem.getDistance() + 2.4, 8, 28);
       new AngleShooterCommand(m_winchSubsystem, optimalAngle).schedule();
     });
 
@@ -122,6 +121,7 @@ public class RobotContainer {
     return new DriveSetDistanceCommand(m_driveSubsystem, -60).alongWith(
       new AngleShooterCommand(m_winchSubsystem, 18)).andThen(
         new ShooterPIDCommand(m_shooterSubsystem)).andThen(
-          new AngleShooterCommand(m_winchSubsystem, 97));
+          new DriveSetDistanceCommand(m_driveSubsystem, -20).andThen(
+          new AngleShooterCommand(m_winchSubsystem, 97)));
   }
 }
