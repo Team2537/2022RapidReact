@@ -13,10 +13,10 @@ public class WinchTestCommand extends CommandBase{
   
     /**
      * Creates a new ExampleCommand.
-     *
+     *cd
      * @param subsystem The subsystem used by this command.
      */
-    public WinchTestCommand(WinchSubsystem subsystem, DoubleSupplier up, DoubleSupplier down) {
+    public WinchTestCommand(WinchSubsystem subsystem, DoubleSupplier up,  DoubleSupplier down) {
       m_subsystem = subsystem;
       m_up = up;
       m_down = down;

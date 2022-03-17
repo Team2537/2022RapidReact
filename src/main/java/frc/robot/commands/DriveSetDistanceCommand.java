@@ -13,8 +13,8 @@ public class DriveSetDistanceCommand extends CommandBase {
   private final double kd = 0;
   private PIDController m_controller = new PIDController(kp, ki, kd);
   private double m_distance, PID;
-  private double initBL, initBR, initFL, initFR; //initial wheel encoder position (BL=BackLeft, BR=BackRight, FL=FrontLeft, FR=FrontRight) 
-  private double deltaBL, deltaBR, deltaFL, deltaFR; //change in wheel encoder position (BL=BackLeft, BR=BackRight, FL=FrontLeft, FR=FrontRight)
+  private double initBL, initBR, initFL, initFR; //initial encoder position (BL = BackLeft, BR=BackRight, FL=FrontLeft, FR=FrontRight)
+  private double deltaBL, deltaBR, deltaFL, deltaFR; //change in encoder position
 
 
   /**
@@ -23,10 +23,11 @@ public class DriveSetDistanceCommand extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
   public DriveSetDistanceCommand(DriveSubsystem subsystem, double distance) {
-    if(distance > 0) m_distance = distance + 4;
-    else m_distance = distance - 4;
+    m_distance = distance>0 ? distance+4 : distance-4; //desired distance is always off by 4; this fixes that
     m_subsystem = subsystem;
     m_controller.setSetpoint(m_distance);
+    
+    
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -51,14 +52,16 @@ public class DriveSetDistanceCommand extends CommandBase {
 
       double avgDeltaEncoderPosition = (deltaBL + deltaBR + deltaFL + deltaFR)/4;
       PID = m_controller.calculate(m_subsystem.encoderToInches(avgDeltaEncoderPosition));
-      PID = Math.max(Math.min(0.1,PID),-0.1); //Scales PID btwn -0.1 to 0.1 if not already
+      PID = Math.max(Math.min(0.1,PID),-0.1); //Scales PID btwn -1 to 1 if not already
       //Shuffleboard.getTab("SmartDashboard").addNumber("PID Value:", PID);
     m_subsystem.setAll(PID);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+  }
 
   // Returns true when the command should end.
   @Override
