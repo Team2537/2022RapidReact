@@ -3,11 +3,11 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.WinchSubsystem;
+import frc.robot.subsystems.WindowMotorSubsystem;
 
-public class WinchTestCommand extends CommandBase{
+public class WindowMotorsTestCommand extends CommandBase{
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-    private final WinchSubsystem m_subsystem;
+    private final WindowMotorSubsystem m_subsystem;
 
     private final DoubleSupplier m_up, m_down;
   
@@ -16,7 +16,7 @@ public class WinchTestCommand extends CommandBase{
      *cd
      * @param subsystem The subsystem used by this command.
      */
-    public WinchTestCommand(WinchSubsystem subsystem, DoubleSupplier up,  DoubleSupplier down) {
+    public WindowMotorsTestCommand(WindowMotorSubsystem subsystem, DoubleSupplier up,  DoubleSupplier down) {
       m_subsystem = subsystem;
       m_up = up;
       m_down = down;
@@ -31,8 +31,8 @@ public class WinchTestCommand extends CommandBase{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (m_up.getAsDouble() != 0) m_subsystem.setWinch(m_up.getAsDouble());
-        else m_subsystem.setWinch(-m_down.getAsDouble());
+        if (m_up.getAsDouble() != 0) m_subsystem.setMotors(m_up.getAsDouble());
+        else m_subsystem.setMotors(-m_down.getAsDouble());
     }
   
     // Called once the command ends or is interrupted.

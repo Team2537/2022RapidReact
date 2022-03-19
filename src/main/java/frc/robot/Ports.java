@@ -12,10 +12,13 @@ public class Ports {
     public static final int SHOOTER_RIGHT = 5;
     public static final int INTAKE_LEFT = 16;
     public static final int INTAKE_RIGHT = 15;
-    public static final int WINCH = 8;
     public static final int ULTRASONIC = 0;
 
     // Climb
     public static final int CLIMB_RIGHT = 9;
     public static final int CLIMB_LEFT = 13;
+
+    // Window Motors
+    public static final int WINDOW_RIGHT = 8;
+    public static final int WINDOW_LEFT = 12;
 }

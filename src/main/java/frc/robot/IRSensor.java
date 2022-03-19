@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 /**
@@ -20,6 +21,6 @@ public class IRSensor {
      * @return Whether or not there is an object within 7 cm of the sensor.
      */
     public boolean getActive() {
-        return m_sensor.getVoltage() < 1;
+        return m_sensor.getVoltage() < 1.25;
     }
 }

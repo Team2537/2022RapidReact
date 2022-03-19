@@ -27,11 +27,14 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public void setMotors(double left, double right) {
         if (left < 0 || right > 0) {
-          if (MAX_CLIMB_POS + getLeftEncoder().getPosition() < 2) left = 0;
-          if (MAX_CLIMB_POS - getRightEncoder().getPosition() < 2) right = 0;
-        } else if (left > 0 || right < 0) {
-          //if (getLeftEncoder().getPosition() > -2) left = 0;
-          //if (getRightEncoder().getPosition() < 2) right = 0;
+          double errorLeft = MAX_CLIMB_POS - getLeftEncoder().getPosition();
+          double errorRight = MAX_CLIMB_POS - getRightEncoder().getPosition();
+
+          left = errorLeft * 0.15;
+          right = errorRight * 0.15;
+
+          left = -Math.min(Math.max(left, 0), 0.75);
+          right = Math.min(Math.max(right, 0), 0.75);
         }
 
         m_left.set(-left);
