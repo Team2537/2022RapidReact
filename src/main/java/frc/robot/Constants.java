@@ -19,4 +19,5 @@ public final class Constants {
     public static final double END_OFFSET = 0.3; // seconds
     public static final double GRAVITY = 32; // ft/s^2
     public static final double MAX_CLIMB_POS = 426;
+    public static final double MICAH_CONSTANT = 0.94444444444;
 }

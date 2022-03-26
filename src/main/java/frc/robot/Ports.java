@@ -21,4 +21,5 @@ public class Ports {
     // Window Motors
     public static final int WINDOW_RIGHT = 8;
     public static final int WINDOW_LEFT = 12;
+    public static final int ANGLE_ENCODER = 1;
 }

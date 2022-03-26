@@ -18,9 +18,6 @@ public class ClimbSubsystem extends SubsystemBase {
         m_left = new CANSparkMax(CLIMB_LEFT, MotorType.kBrushless);
         m_right = new CANSparkMax(CLIMB_RIGHT, MotorType.kBrushless);
 
-        m_left.getEncoder().setPosition(0);
-        m_right.getEncoder().setPosition(0);
-
         Shuffleboard.getTab("SmartDashboard").addNumber("Left Climb", () -> m_left.getEncoder().getPosition());
         Shuffleboard.getTab("SmartDashboard").addNumber("Right Climb", () -> m_right.getEncoder().getPosition());
     }

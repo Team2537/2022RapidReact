@@ -38,8 +38,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final double maxRPM = 5676;
     private final double cycleTime = 0.02;
 
-    private final double shooter_kP = 0.12;
-    private final double nominalPWM = 0.62;
+    private final double shooter_kP = 0.113;
+    private final double nominalPWM = 0.605;
 
     private final double shooter_kI = 0.03;
     private double shooter_tI = 0;

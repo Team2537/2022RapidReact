@@ -7,13 +7,18 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
+import static frc.robot.Ports.*;
 import java.text.DecimalFormat;
 
 public class WindowMotorSubsystem extends SubsystemBase {
-    private final CANSparkMax m_windowLeft = new CANSparkMax(12, MotorType.kBrushed);
-    private final CANSparkMax m_windowRight = new CANSparkMax(8, MotorType.kBrushed);
 
-    private final DutyCycleEncoder shooterAngleEncoder = new DutyCycleEncoder(1);
+    private double prevAngle = 85f;
+    private double angle = 85f;
+
+    private final CANSparkMax m_windowLeft = new CANSparkMax(WINDOW_LEFT, MotorType.kBrushed);
+    private final CANSparkMax m_windowRight = new CANSparkMax(WINDOW_RIGHT, MotorType.kBrushed);
+
+    private final DutyCycleEncoder shooterAngleEncoder = new DutyCycleEncoder(ANGLE_ENCODER);
 
      /** Creates a new WindowMotorSubsystem. */
     public WindowMotorSubsystem() {
@@ -26,17 +31,17 @@ public class WindowMotorSubsystem extends SubsystemBase {
         m_windowRight.set(percentOut);
     }
 
-    private final double kP = 0.025;
+    private final double kP = 0.15;
+    private final double kI = 0.005;
+    private final double kD = 0.0005;
 
-    private final double kI = 0.2;
     private double tI = 0;
-
-    private final double kD = 0.00085;
     private double prevError = 0;
-    private final double cycleTime = 0.021;
 
-    public void setAngle(double targetAngle) {
-        /*double error = targetAngle - getShooterAngle();
+    private final double cycleTime = 0.02;
+
+    private void setPoint(double targetAngle) {
+        double error = targetAngle - getShooterAngle();
         
         double proportional = error * kP;
 
@@ -45,51 +50,54 @@ public class WindowMotorSubsystem extends SubsystemBase {
         double derivative = kD * (error - prevError) / cycleTime;
         prevError = error;
 
-        double pid = Math.min(Math.max((proportional + tI - derivative), -0.6), 0.6);
-        setMotors(pid);*/
+        double pid = Math.min(Math.max((proportional + tI - derivative), -0.75), 0.75);
 
-        double error = targetAngle - getShooterAngle();
+        setMotors(pid);
+    }
 
-        double power = Math.min(Math.max(error * 0.25, -0.6), 1);
-        setMotors(power);
+    public void setAngle(double targetAngle) {
+        angle = targetAngle;
     }
 
     public void stopMotors() {
-        tI = 0;
-        setMotors(0.1);
+        setMotors(0);
     }
 
     public double getShooterAngle() {
-        return (shooterAngleEncoder.get() * 360 + 4.7) / 0.9444444; // Multiply by 360 to convert revolutions to degrees.
+        return (shooterAngleEncoder.get() * 360 + 4.7) / MICAH_CONSTANT; // Multiply by 360 to convert revolutions to degrees.
     }
 
-    public double getAngle(double distance, double height, double initVelocity) {
+    public double getMaxAngle(double distance, double height, double initVelocity) {
         distance = Double.parseDouble(new DecimalFormat("#.##").format(distance));
         for (int i = 90000; i >= 0; i--) {
             double y =
                 Math.tan(Math.toRadians(i / 1000f)) * distance - 
                 (GRAVITY * distance * distance / (2f * initVelocity * initVelocity * 
                 Math.cos(Math.toRadians(i / 1000f)) * Math.cos(Math.toRadians(i / 1000f))));
-            if (Math.abs(height - y) < 0.001 && 90 - (i/1000f) >= 13) return (i / 1000f);
+            if (Math.abs(height - y) < 0.001 && (i / 1000f) < 90) return (i / 1000f);
         }
         return 15;
-        /*
-        double time, testHeight, angle;
-        for (int i=90000; i>=0; i--){
-             angle = i/1000;
-             time= distance/(initVelocity*Math.cos(Math.toRadians(angle)));
-             testHeight= initVelocity*time + 0.5*GRAVITY*Math.pow(time, 2);
-             if (Math.abs(height-testHeight)<=0.001 && (90 - angle) > 15) {
-                 System.out.println(90 - angle);
-                 return 90 - angle;
-             }
+    }
+
+    public double getMinAngle(double distance, double height, double initVelocity) {
+        distance = Double.parseDouble(new DecimalFormat("#.##").format(distance));
+        for (int i = 0; i <= 90000; i--) {
+            double y =
+                Math.tan(Math.toRadians(i / 1000f)) * distance - 
+                (GRAVITY * distance * distance / (2f * initVelocity * initVelocity * 
+                Math.cos(Math.toRadians(i / 1000f)) * Math.cos(Math.toRadians(i / 1000f))));
+            if (Math.abs(height - y) < 0.001 && (i / 1000f) < 90) return (i / 1000f);
         }
-        System.out.println("Failed to find angle");
-        return 15;*/
+        return 15;
     }
 
     @Override
     public void periodic() {
+        if (prevAngle != angle) tI = 0;
+
+        setPoint(angle);
+
+        prevAngle = angle;
     }
   
     @Override

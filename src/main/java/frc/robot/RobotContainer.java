@@ -98,7 +98,7 @@ public class RobotContainer {
 
     Button shooterPositionButton = new Button(() -> xboxController.getAButton());
     shooterPositionButton.whenPressed(() -> {
-      optimalAngle = m_windowMotorSubsystem.getAngle(m_rangefinderSubsystem.getDistance() + 2.4, 8, 28);
+      optimalAngle = m_windowMotorSubsystem.getMaxAngle(m_rangefinderSubsystem.getDistance() + 2.8, 8, 28);
       new AngleShooterCommand(m_windowMotorSubsystem, optimalAngle).schedule();
     });
 
@@ -122,7 +122,7 @@ public class RobotContainer {
    */
   public SequentialCommandGroup getAutonomousCommand() {
     return new DriveSetDistanceCommand(m_driveSubsystem, -60).andThen(
-      new AngleShooterCommand(m_windowMotorSubsystem, 72)).andThen(
+      new AngleShooterCommand(m_windowMotorSubsystem, 72.5)).andThen(
         new WaitCommand(0.75).andThen(
           new ShooterPIDCommand(m_shooterSubsystem)).andThen(
             new DriveSetDistanceCommand(m_driveSubsystem, -20).andThen(
