@@ -12,8 +12,8 @@ import java.text.DecimalFormat;
 
 public class WindowMotorSubsystem extends SubsystemBase {
 
-    private double prevAngle = 85f;
-    private double angle = 85f;
+    private double prevAngle = DEFAULT_ANGLE;
+    private double angle = DEFAULT_ANGLE;
 
     private final CANSparkMax m_windowLeft = new CANSparkMax(WINDOW_LEFT, MotorType.kBrushed);
     private final CANSparkMax m_windowRight = new CANSparkMax(WINDOW_RIGHT, MotorType.kBrushed);
@@ -50,7 +50,7 @@ public class WindowMotorSubsystem extends SubsystemBase {
         double derivative = kD * (error - prevError) / cycleTime;
         prevError = error;
 
-        double pid = Math.min(Math.max((proportional + tI - derivative), -0.75), 0.75);
+        double pid = Math.min(Math.max((proportional + tI - derivative), -0.5), 0.75);
 
         setMotors(pid);
     }
@@ -81,7 +81,7 @@ public class WindowMotorSubsystem extends SubsystemBase {
 
     public double getMinAngle(double distance, double height, double initVelocity) {
         distance = Double.parseDouble(new DecimalFormat("#.##").format(distance));
-        for (int i = 0; i <= 90000; i--) {
+        for (int i = 0; i <= 90000; i++) {
             double y =
                 Math.tan(Math.toRadians(i / 1000f)) * distance - 
                 (GRAVITY * distance * distance / (2f * initVelocity * initVelocity * 

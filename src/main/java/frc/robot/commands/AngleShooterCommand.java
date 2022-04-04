@@ -37,8 +37,6 @@ public class AngleShooterCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-      m_controller.setRumble(RumbleType.kLeftRumble, 0.1);
-      m_controller.setRumble(RumbleType.kRightRumble, 0.1);
 
       if (Math.abs(m_angle - m_subsystem.getShooterAngle()) < 0.5) {
         m_timer.start();
@@ -51,8 +49,6 @@ public class AngleShooterCommand extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-      m_controller.setRumble(RumbleType.kLeftRumble, 0);
-      m_controller.setRumble(RumbleType.kRightRumble, 0);
     }
   
     // Returns true when the command should end.

@@ -38,7 +38,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private final double maxRPM = 5676;
     private final double cycleTime = 0.02;
 
-    private final double shooter_kP = 0.113;
+    private final double shooter_kP = 0.115;
     private final double nominalPWM = 0.605;
 
     private final double shooter_kI = 0.03;
@@ -78,6 +78,13 @@ public class ShooterSubsystem extends SubsystemBase {
      */
     public double getShooterVelocity() {
         return (shooterRight.getEncoder().getVelocity() + shooterLeft.getEncoder().getVelocity()) / 2;
+    }
+
+    public boolean shooterMotorsClose(double target, double range) {
+        double errorLeft = Math.abs(target - shooterLeft.getEncoder().getVelocity());
+        double errorRight = Math.abs(target - shooterRight.getEncoder().getVelocity());
+
+        return errorLeft <= range && errorRight <= range;
     }
 
     public boolean getBackSensorActive() {
